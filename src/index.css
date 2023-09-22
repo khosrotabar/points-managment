@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "IranYekanNum";
+    src: url("./assets/fonts/IranYekanFa/iranyekanregular.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "IranYekan";
+    src: url("./assets/fonts/IranYekanFa/iranyekanweblight.woff")
+      format("truetype");
+    font-weight: 300;
+    font-style: light;
+  }
+  @font-face {
+    font-family: "IranYekan";
+    src: url("./assets/fonts/IranYekanFa/iranyekanregular.woff")
+      format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "IranYekan";
+    src: url("./assets/fonts/IranYekanFa/iranyekanweblight.woff")
+      format("truetype");
+    font-weight: 500;
+    font-style: medium;
+  }
+  @font-face {
+    font-family: "IranYekan";
+    src: url("./assets/fonts/IranYekanFa/iranyekanweblight.woff")
+      format("truetype");
+    font-weight: 600;
+  }
+  @font-face {
+    font-family: "IranYekan";
+    src: url("./assets/fonts/IranYekanFa/iranyekanwebbold.woff")
+      format("truetype");
+    font-weight: 700;
+    font-style: bold;
+  }
+
+  #root {
+    isolation: isolate;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    width: 100%;
+    font-family: "IranYekan";
+    direction: rtl;
+  }
+
+  body {
+    background-color: #fdfdfd;
+  }
+}
