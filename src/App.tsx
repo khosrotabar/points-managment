@@ -16,7 +16,7 @@ function App() {
   ]);
 
   return (
-    <div className="h-full w-full font-iranyekan">
+    <div className="w-full font-iranyekan">
       <HelmetProvider>
         <RouterProvider router={router} />
       </HelmetProvider>
