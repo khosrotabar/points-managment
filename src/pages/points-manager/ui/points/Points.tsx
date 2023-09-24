@@ -21,7 +21,7 @@ const Points = () => {
           <span className="ml-[9px]">میانگین</span>
           <span>در یک نگاه</span>
         </div>
-        <div className="no-scrollbar flex h-full max-h-[615px] w-full flex-col gap-5 overflow-y-auto px-[58px] pb-10">
+        <div className="no-scrollbar flex max-h-[65vh] w-full flex-col gap-5 overflow-y-auto px-[58px] pb-10">
           {teams.map((item, index) => {
             const sprintsMean =
               (item.last_three_sprint +

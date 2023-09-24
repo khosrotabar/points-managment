@@ -10,3 +10,8 @@ export type SprintProps = {
   sprint_name_part1?: string;
   sprint_name_part2?: string;
 };
+
+export interface loginProps {
+  username: string;
+  password: string;
+}

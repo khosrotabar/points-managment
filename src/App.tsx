@@ -2,6 +2,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/home/page";
 import PointsManager from "./pages/points-manager/page";
+import Login from "./pages/login/page";
 
 function App() {
   const router = createBrowserRouter([
@@ -12,6 +13,10 @@ function App() {
     {
       path: "/points",
       element: <PointsManager />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
     },
   ]);
 
