@@ -15,7 +15,7 @@ const Points = () => {
   return (
     <div className="w-full max-w-[761px]">
       <Filters />
-      <div className="max-h-[730px] overflow-hidden rounded-[30px] bg-[#FEFEFE] pt-[35px]">
+      <div className="max-h-[73vh] overflow-hidden rounded-[30px] bg-[#FEFEFE] pt-[35px]">
         <div className="flex w-full items-center justify-end gap-[23px] pb-[14px] pl-[68px] text-sm font-normal text-[#00344E]">
           <span>اسپرینت آخر</span>
           <span className="ml-[9px]">میانگین</span>

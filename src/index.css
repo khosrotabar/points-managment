@@ -28,7 +28,7 @@
     src: url("./assets/fonts/IranYekanFa/iranyekanweblight.woff")
       format("truetype");
     font-weight: 500;
-    font-style: medium;
+    font-style: normal;
   }
   @font-face {
     font-family: "IranYekan";

@@ -11,7 +11,7 @@ const PointsManager = () => {
       </Helmet>
       <Layout>
         <div className="-mt-[86px]  mr-[133px] h-screen pl-[32px] pt-[90px]">
-          <div className="flex h-full w-full items-start justify-center rounded-t-[50px] bg-[#F8FAFB] pl-[51px] pr-[54px] pt-7">
+          <div className="flex h-full w-full items-start justify-center gap-5 rounded-t-[50px] bg-[#F8FAFB] pl-[51px] pr-[54px] pt-7">
             <Points />
             <Summary />
           </div>
