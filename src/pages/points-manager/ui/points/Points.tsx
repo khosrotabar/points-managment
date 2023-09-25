@@ -1,9 +1,16 @@
-import { teams } from "@/data";
+import { useQuery } from "react-query";
 import NoAvatar from "@/assets/images/no-avatar.png";
 import clsx from "clsx";
 import Filters from "./filters";
+import { getSprints } from "@/api";
+import { dataProps } from "@/shared/types";
+import { useContextValue } from "@/context";
 
 const Points = () => {
+  let teams: dataProps[] | undefined = [];
+  const { state } = useContextValue();
+  const { data } = useQuery("sprints", getSprints);
+
   const sprintColorHandler = (lastSprint: number, sprintsMean: number) => {
     if (lastSprint >= sprintsMean) {
       return true;
@@ -12,6 +19,39 @@ const Points = () => {
     }
   };
 
+  teams = data;
+  teams = teams?.filter((item) => item.team === state.team);
+
+  // Creating a new array with objects having same name value
+
+  const cleanTeams: { person: string; objects: dataProps[] }[] | undefined =
+    teams?.reduce(
+      (acc, obj) => {
+        const foundObj = acc.find((item) => item.person === obj.person);
+
+        if (foundObj) {
+          foundObj.objects.push(obj);
+          // Sort the objects within the group by the "date" property
+          foundObj.objects.sort((a, b) => {
+            const dateA = a.date;
+            const dateB = b.date;
+            if (dateA < dateB) {
+              return -1;
+            }
+            if (dateA > dateB) {
+              return 1;
+            }
+            return 0;
+          });
+        } else {
+          acc.push({ person: obj.person, objects: [obj] });
+        }
+
+        return acc;
+      },
+      [] as { person: string; objects: dataProps[] }[],
+    );
+  console.log(first)
   return (
     <div className="w-full max-w-[761px]">
       <Filters />
@@ -22,7 +62,7 @@ const Points = () => {
           <span>در یک نگاه</span>
         </div>
         <div className="no-scrollbar flex max-h-[65vh] w-full flex-col gap-5 overflow-y-auto px-[58px] pb-10">
-          {teams.map((item, index) => {
+          {cleanTeams?.map((item, index) => {
             const sprintsMean =
               (item.last_three_sprint +
                 item.last_two_sprint +
@@ -39,13 +79,13 @@ const Points = () => {
               >
                 <div className="flex items-center gap-3">
                   <img
-                    src={item.avatar !== "" ? item.avatar : NoAvatar}
+                    src={NoAvatar}
                     className="h-[60px] w-[60px] rounded-full"
                     alt=""
                   />
                   <div>
                     <span className="text-base text-[#00344E]">
-                      {item.name}
+                      {item.person}
                     </span>
                   </div>
                 </div>

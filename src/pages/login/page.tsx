@@ -1,21 +1,45 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { login } from "@/api";
 
 const Login = () => {
   const [usernameInput, setUserNameInput] = useState<string>("");
   const [passwordInput, setPasswordInput] = useState<string>("");
   const [usernameEror, setUsernameError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
+  const token = localStorage.getItem("Authorization");
+  const navigate = useNavigate();
+  const notify = () =>
+    toast.error(<p className="font-iranyekan">خطایی رخ داده است</p>, {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  if (token) {
+    navigate("/points");
+    return;
+  }
 
-  const loginHandler = async () => {};
+  const loginHandler = async (event: FormEvent) => {
+    event.preventDefault();
 
-  const usernameHandler = (event) => {
-    setUserNameInput(event.target.value);
-    setUsernameError(false);
-  };
+    usernameInput === "" ? setUsernameError(true) : setUsernameError(false);
+    passwordInput === "" ? setPasswordError(true) : setPasswordError(false);
 
-  const passwordHandler = (event) => {
-    setPasswordInput(event.target.value);
-    setPasswordError(false);
+    if (usernameInput !== "" && passwordInput !== "") {
+      const response = await login({ usernameInput, passwordInput });
+      if (response) {
+        navigate("/points");
+      } else {
+        notify();
+      }
+    }
   };
 
   return (
@@ -43,9 +67,13 @@ const Login = () => {
               autoComplete="off"
               placeholder="نام کاربری شما"
               value={usernameInput}
-              onChange={usernameHandler}
+              onChange={(e) => setUserNameInput(e.target.value)}
             />
-            <span className="text-"></span>
+            {usernameEror && usernameInput === "" && (
+              <span className="mt-2 pr-2 text-xs text-[#E51654]">
+                * نام کاربری الزامی است
+              </span>
+            )}
           </div>
           <div className="relative h-fit w-full">
             <label
@@ -56,14 +84,19 @@ const Login = () => {
             </label>
             <input
               type="password"
-              name="username"
-              id="username"
+              name="password"
+              id="password"
               className="w-full rounded-[25px] border-[1px] border-[#CDCDCD] bg-white px-5 py-3 text-base outline-none placeholder:text-xs placeholder:text-[#7F8389] placeholder:opacity-60"
               autoComplete="new-password"
               placeholder="رمز عبور شما"
               value={passwordInput}
-              onChange={passwordHandler}
+              onChange={(e) => setPasswordInput(e.target.value)}
             />
+            {passwordError && passwordInput === "" && (
+              <span className="mt-2 pr-2 text-xs text-[#E51654]">
+                * رمز عبور الزامی است
+              </span>
+            )}
           </div>
           <button
             type="submit"
@@ -73,6 +106,7 @@ const Login = () => {
           </button>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

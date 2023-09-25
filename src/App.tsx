@@ -3,16 +3,27 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/home/page";
 import PointsManager from "./pages/points-manager/page";
 import Login from "./pages/login/page";
+import { RequireAuth } from "./components/require-auth";
+import { AxiosError } from "axios";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
+      element: (
+        <RequireAuth>
+          <Home />
+        </RequireAuth>
+      ),
     },
     {
       path: "/points",
-      element: <PointsManager />,
+      element: (
+        <RequireAuth>
+          <PointsManager />
+        </RequireAuth>
+      ),
     },
     {
       path: "/login",
@@ -20,11 +31,33 @@ function App() {
     },
   ]);
 
+  const useErrorBoundary = (error: unknown) => {
+    return Boolean(
+      error instanceof AxiosError &&
+        error.response &&
+        error.response?.status >= 500,
+    );
+  };
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        useErrorBoundary,
+        refetchOnWindowFocus: false,
+      },
+      mutations: {
+        useErrorBoundary,
+      },
+    },
+  });
+
   return (
     <div className="w-full font-iranyekan">
-      <HelmetProvider>
-        <RouterProvider router={router} />
-      </HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <RouterProvider router={router} />
+        </HelmetProvider>
+      </QueryClientProvider>
     </div>
   );
 }
