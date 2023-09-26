@@ -1,5 +1,4 @@
 import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { login } from "@/api";
 
@@ -9,7 +8,6 @@ const Login = () => {
   const [usernameEror, setUsernameError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
   const token = localStorage.getItem("Authorization");
-  const navigate = useNavigate();
   const notify = () =>
     toast.error(<p className="font-iranyekan">خطایی رخ داده است</p>, {
       position: "bottom-left",
@@ -22,7 +20,7 @@ const Login = () => {
       theme: "light",
     });
   if (token) {
-    navigate("/points");
+    window.location.replace("/points");
     return;
   }
 
@@ -35,7 +33,7 @@ const Login = () => {
     if (usernameInput !== "" && passwordInput !== "") {
       const response = await login({ usernameInput, passwordInput });
       if (response) {
-        navigate("/points");
+        window.location.replace("/points");
       } else {
         notify();
       }

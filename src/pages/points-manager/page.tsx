@@ -1,18 +1,9 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Layout from "@/components/layout/Layout";
 import Points from "./ui/points/Points";
 import Summary from "./ui/summary/Summary";
-import FullpageLoading from "@/components/fullpage-loading";
 
 const PointsManager = () => {
-  // const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  // if (isLoading) {
-  //   return <FullpageLoading />;
-  // }
-
   return (
     <>
       <Helmet>

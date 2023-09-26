@@ -1,4 +1,4 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import PointsManagerIcon from "../icons/points-manager-icon";
 import MainChartIcon from "../icons/main-chart-icon";
@@ -7,6 +7,12 @@ import LogoutIcon from "../icons/logout-icon";
 const Header = () => {
   const location = useLocation();
   const hasUrl = location.pathname.includes("points");
+  const navigate = useNavigate();
+
+  const logoutHandler = () => {
+    localStorage.removeItem("Authorization");
+    navigate("/login");
+  };
 
   return (
     <div className="flex h-[86px] w-full items-center justify-between pl-[86px] pr-[62px] text-base font-normal text-[#00344E]">
@@ -52,7 +58,10 @@ const Header = () => {
           </div>
         </Link>
       </div>
-      <div className="flex cursor-pointer items-center gap-2">
+      <div
+        className="flex cursor-pointer items-center gap-2"
+        onClick={logoutHandler}
+      >
         <LogoutIcon width={19} height={18} />
         <span>خروج</span>
       </div>

@@ -1,11 +1,14 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { SprintProps } from "@/shared/types";
 
 const SprintSlider: FC<SprintProps> = ({ total_sprint, current_sprint }) => {
-  const percentage: number = parseInt(
-    ((current_sprint / total_sprint) * 100).toFixed(),
-  );
+  const [count, setCount] = useState<number>(0);
+  let percentage: number = 0;
+
+  if (total_sprint && current_sprint) {
+    percentage = parseInt(((current_sprint / total_sprint) * 100).toFixed());
+  }
 
   const animation = {
     hidden: {
@@ -13,10 +16,10 @@ const SprintSlider: FC<SprintProps> = ({ total_sprint, current_sprint }) => {
     },
     visible: {
       transition: {
-        duration: 0.7,
+        duration: 1,
         ease: "easeInOut",
       },
-      width: `${percentage}%`,
+      width: `${percentage > 100 ? "100" : percentage}%`,
     },
   };
 
@@ -30,22 +33,41 @@ const SprintSlider: FC<SprintProps> = ({ total_sprint, current_sprint }) => {
     }
   };
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      percentage !== 0 &&
+        setCount((prevCount) => {
+          if (prevCount > percentage) {
+            clearInterval(timer);
+            return percentage;
+          } else {
+            return prevCount + 1;
+          }
+        });
+    }, 10);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [percentage]);
+
   return (
     <div className="flex w-full items-center gap-[10px]">
       <span
-        className="whitespace-nowrap text-sm"
+        className="w-[40px] whitespace-nowrap text-sm"
         style={{ color: averageColorHandler(percentage) }}
       >
-        {percentage}%
+        {count}%
       </span>
       <div className="relative h-[7px] w-full rounded-full bg-[#EAEAEA]">
         <motion.div
           variants={animation}
           initial="hidden"
           animate="visible"
-          className={"absolute left-0 top-0 h-full w-[50px] rounded-full"}
+          className={
+            "absolute left-0 top-0 h-full w-[50px] rounded-full transition-colors duration-500"
+          }
           style={{
-            width: `${percentage}%`,
             backgroundColor: averageColorHandler(percentage),
           }}
         ></motion.div>
