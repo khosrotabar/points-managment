@@ -1,11 +1,10 @@
 import { useQuery } from "react-query";
 import NoAvatar from "@/assets/images/no-avatar.png";
 import clsx from "clsx";
-import Filters from "./filters";
 import { getSprints } from "@/api";
 import { dataProps } from "@/shared/types";
 import { useContextValue } from "@/context";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SprintsLoading from "@/components/sprints-loading";
 import LineChart from "@/components/chart";
 import { Tooltip } from "react-tooltip";
@@ -60,10 +59,19 @@ const Points = () => {
   const labels = ["Label 1", "Label 2", "Label 3"];
 
   return (
-    <div className="w-full max-w-[761px]">
-      <Filters />
-      <div className="max-h-[73vh] overflow-hidden rounded-[30px] bg-[#FEFEFE] pt-[35px]">
-        <div className="flex w-full items-center justify-end gap-[23px] pb-[14px] pl-[68px] text-sm font-normal text-[#00344E]">
+    <div
+      className={clsx(
+        "w-full transition-all duration-700 ease-in-out",
+        state.activeSprints ? "max-w-[761px]" : "max-w-[0px]",
+      )}
+    >
+      <div
+        className={clsx(
+          "max-h-[73vh] overflow-hidden rounded-[30px] bg-[#FEFEFE] pt-[35px] transition-opacity delay-200 duration-300",
+          state.activeSprints ? "opacity-100" : "opacity-0",
+        )}
+      >
+        <div className="flex w-full items-center justify-end gap-[23px] whitespace-nowrap pb-[14px] pl-[68px] text-sm font-normal text-[#00344E]">
           <span>اسپرینت آخر</span>
           <span className="ml-[9px]">میانگین</span>
           <span>در یک نگاه</span>
@@ -102,7 +110,7 @@ const Points = () => {
                       alt=""
                     />
                     <div>
-                      <span className="text-base text-[#00344E]">
+                      <span className="whitespace-nowrap text-base text-[#00344E]">
                         {item.person}
                       </span>
                     </div>
@@ -126,8 +134,8 @@ const Points = () => {
                     >
                       <LineChart
                         data={[
+                          item.objects[2].done,
                           item.objects[1].done,
-                          sprintsMean,
                           item.objects[0].done,
                         ]}
                         labels={labels}

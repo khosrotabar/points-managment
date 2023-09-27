@@ -5,6 +5,7 @@ import { getTeams } from "@/api";
 import { useContextValue } from "@/context";
 import { useState } from "react";
 import SprintsLoading from "@/components/sprints-loading";
+import clsx from "clsx";
 
 const Summary = () => {
   const [isLoding, setIsLoading] = useState<boolean>(true);
@@ -46,7 +47,12 @@ const Summary = () => {
   }
 
   return (
-    <div className="mt-[48px] flex w-[388px] flex-col items-start gap-9 rounded-[30px] bg-[#FCFCFC] px-9 py-7">
+    <div
+      className={clsx(
+        "flex w-[388px] flex-col items-start gap-9 rounded-[30px] bg-[#FCFCFC] px-9 py-7 transition-all duration-700 ease-in-out",
+        state.activeSprints ? "scale-100" : "origin-top scale-[1.3]",
+      )}
+    >
       <div className="flex items-center gap-2">
         <PichartIcon width={21} height={22} />
         <span className="text-[20px] font-[700] text-[#b2b2b2]">

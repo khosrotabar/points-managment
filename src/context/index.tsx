@@ -1,19 +1,27 @@
 import React, { ReactNode, createContext, useReducer } from "react";
 
 // Define the initial state
-type InitialState = Record<string, string>;
+type InitialState = {
+  team: string;
+  activeSprints: boolean;
+};
 
 const initialState: InitialState = {
   team: "Trader",
+  activeSprints: false,
 };
 
 // Define the reducer function
-type Action = { type: "TEAM"; payload: string };
+type Action =
+  | { type: "TEAM"; payload: string }
+  | { type: "SPRINTS"; payload: boolean };
 
 const reducer = (state: InitialState, action: Action): InitialState => {
   switch (action.type) {
     case "TEAM":
       return { ...state, team: action.payload };
+    case "SPRINTS":
+      return { ...state, activeSprints: action.payload };
     default:
       return state;
   }
