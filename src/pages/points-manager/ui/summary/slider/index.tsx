@@ -1,9 +1,8 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { motion } from "framer-motion";
 import { SprintProps } from "@/shared/types";
 
 const SprintSlider: FC<SprintProps> = ({ total_sprint, current_sprint }) => {
-  const [count, setCount] = useState<number>(0);
   let percentage: number = 0;
 
   if (total_sprint && current_sprint) {
@@ -16,7 +15,7 @@ const SprintSlider: FC<SprintProps> = ({ total_sprint, current_sprint }) => {
     },
     visible: {
       transition: {
-        duration: 1,
+        duration: 0.7,
         ease: "easeInOut",
       },
       width: `${percentage > 100 ? "100" : percentage}%`,
@@ -33,31 +32,13 @@ const SprintSlider: FC<SprintProps> = ({ total_sprint, current_sprint }) => {
     }
   };
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      percentage !== 0 &&
-        setCount((prevCount) => {
-          if (prevCount > percentage) {
-            clearInterval(timer);
-            return percentage;
-          } else {
-            return prevCount + 1;
-          }
-        });
-    }, 10);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [percentage]);
-
   return (
     <div className="flex w-full items-center gap-[10px]">
       <span
         className="w-[40px] whitespace-nowrap text-sm"
         style={{ color: averageColorHandler(percentage) }}
       >
-        {count}%
+        {percentage !== 0 && `${percentage}%`}
       </span>
       <div className="relative h-[7px] w-full rounded-full bg-[#EAEAEA]">
         <motion.div

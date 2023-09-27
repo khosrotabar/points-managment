@@ -1,11 +1,12 @@
-import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { HelmetProvider } from "react-helmet-async";
+import { AxiosError } from "axios";
 import Home from "./pages/home/page";
 import PointsManager from "./pages/points-manager/page";
 import Login from "./pages/login/page";
 import { RequireAuth } from "./components/require-auth";
-import { AxiosError } from "axios";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { ErrorFallback } from "./components/error-fallback";
 
 function App() {
   const router = createBrowserRouter([
@@ -16,6 +17,7 @@ function App() {
           <Home />
         </RequireAuth>
       ),
+      errorElement: <ErrorFallback />,
     },
     {
       path: "/points",
@@ -24,10 +26,12 @@ function App() {
           <PointsManager />
         </RequireAuth>
       ),
+      errorElement: <ErrorFallback />,
     },
     {
       path: "/login",
       element: <Login />,
+      errorElement: <ErrorFallback />,
     },
   ]);
 

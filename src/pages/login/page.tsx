@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { login } from "@/api";
 
 const Login = () => {
@@ -8,17 +8,6 @@ const Login = () => {
   const [usernameEror, setUsernameError] = useState<boolean>(false);
   const [passwordError, setPasswordError] = useState<boolean>(false);
   const token = localStorage.getItem("Authorization");
-  const notify = () =>
-    toast.error(<p className="font-iranyekan">خطایی رخ داده است</p>, {
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
   if (token) {
     window.location.replace("/points");
     return;
@@ -34,8 +23,6 @@ const Login = () => {
       const response = await login({ usernameInput, passwordInput });
       if (response) {
         window.location.replace("/points");
-      } else {
-        notify();
       }
     }
   };

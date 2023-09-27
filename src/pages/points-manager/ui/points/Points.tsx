@@ -5,13 +5,15 @@ import Filters from "./filters";
 import { getSprints } from "@/api";
 import { dataProps } from "@/shared/types";
 import { useContextValue } from "@/context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SprintsLoading from "@/components/sprints-loading";
 import LineChart from "@/components/chart";
+import { Tooltip } from "react-tooltip";
+import HoverTooltip from "./hover-part";
+import { ToastContainer } from "react-toastify";
 
 const Points = () => {
   const [isLoding, setIsLoading] = useState<boolean>(true);
-  const [isHovered, setIsHovered] = useState<number | null>(null);
   let teams: dataProps[] | undefined = [];
   const { state } = useContextValue();
   const { data } = useQuery("sprints", () => getSprints(setIsLoading));
@@ -119,66 +121,44 @@ const Points = () => {
                     </span>
                     <div
                       className="-ml-[11px]"
-                      onMouseOver={() => setIsHovered(index)}
-                      onMouseOut={() => setIsHovered(null)}
+                      data-tooltip-id={`custom-tooltip-${index}`}
+                      data-tooltip-content=""
                     >
                       <LineChart
                         data={[
-                          item.objects[2].done,
                           item.objects[1].done,
+                          sprintsMean,
                           item.objects[0].done,
                         ]}
                         labels={labels}
                         width={51}
-                        height={90}
+                        height={210}
                         color={isProsper ? "#00BA9F" : "#D14085"}
                       />
                     </div>
                   </div>
-                  {/* hover part */}
-                  <div
-                    className={clsx(
-                      "absolute -bottom-[40px] -left-[50px] z-10 flex h-[54px] w-[195px] items-center justify-center gap-3 rounded-[5px] border-[1px] border-[#D3D3D3] bg-[#FBFBFB]",
-                      isHovered === index ? "opacity-100" : "opacity-0",
-                    )}
+                  <Tooltip
+                    id={`custom-tooltip-${index}`}
+                    place="bottom"
+                    style={{
+                      backgroundColor: "transparent",
+                      marginTop: "-20px",
+                      zIndex: 999,
+                    }}
                   >
-                    <div className="flex flex-col items-center">
-                      <span
-                        className={clsx(
-                          "text-base",
-                          isProsperLastTow
-                            ? "text-[#00BA9F]"
-                            : "text-[#D14085]",
-                        )}
-                      >
-                        {item.objects[1].done}
-                      </span>
-                      <p className="text-xs font-light text-[#404040]">
-                        <span className="font-bold">دو</span> اسپرینت قبل
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <span
-                        className={clsx(
-                          "text-base",
-                          isProsperLastThree
-                            ? "text-[#00BA9F]"
-                            : "text-[#D14085]",
-                        )}
-                      >
-                        {item.objects[2].done}
-                      </span>
-                      <p className="text-xs font-light text-[#404040]">
-                        <span className="font-bold">سه</span> اسپرینت قبل
-                      </p>
-                    </div>
-                  </div>
+                    <HoverTooltip
+                      isProsperLastThree={isProsperLastThree}
+                      isProsperLastTow={isProsperLastTow}
+                      item={item}
+                    />
+                  </Tooltip>
                 </div>
               );
             })}
           </div>
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 };

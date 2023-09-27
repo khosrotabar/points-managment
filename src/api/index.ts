@@ -2,6 +2,7 @@ import { Dispatch } from "react";
 import Axios from "axios";
 import { BASE_API_URL } from "@/config";
 import { dataProps, loginProps, teamsObjectProps } from "@/shared/types";
+import { notify } from "@/components/notify";
 
 const axios = Axios.create({
   baseURL: BASE_API_URL,
@@ -21,10 +22,11 @@ export const login = async ({ usernameInput, passwordInput }: loginProps) => {
       },
     });
     localStorage.setItem("Authorization", response.data.token);
-    return true;
+    return true
   } catch (err) {
     console.log(err);
-    return false;
+    notify("!نام کاربری یا رمز عبور اشتباه است")
+    return undefined;
   }
 };
 
@@ -40,6 +42,7 @@ export const getSprints = async (setIsLoading: Dispatch<boolean>): Promise<dataP
     return data;
   } catch (err) {
     console.log(err);
+    notify("!متاسفانه خطایی رخ داده است")
     return undefined;
   }
 };
@@ -56,6 +59,7 @@ export const getTeams = async (setIsLoading: Dispatch<boolean>): Promise<teamsOb
     return data
   } catch (err) {
     console.log(err);
+    notify("!متاسفانه خطایی رخ داده است")
     return undefined
   }
 };

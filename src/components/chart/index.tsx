@@ -35,9 +35,8 @@ const LineChart: React.FC<LineChartProps> = ({
               data,
               fill: false,
               borderColor: color,
-              tension: 0.1,
+              tension: 0,
               pointRadius: 0, // Set point radius to 0 to hide data points
-              borderWidth: 2,
             },
           ],
         },
@@ -87,7 +86,10 @@ const LineChart: React.FC<LineChartProps> = ({
   return (
     <canvas
       ref={chartRef}
-      style={{ width: `${width}px`, height: `${height}px` }}
+      style={{
+        width: `${width}px`,
+        height: `${height}px`,
+      }}
     />
   );
 };
