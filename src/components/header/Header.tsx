@@ -32,7 +32,7 @@ const Header = () => {
             <span
               className={clsx(hasUrl && "text-[20px] font-bold text-[#00131C]")}
             >
-              مدیریت پوینت ها
+              برنامه ریزی روشن
             </span>
           </div>
         </Link>
